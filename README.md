@@ -16,7 +16,14 @@ I had recently come across a game engine method I really like in java, and proba
  * Add fill shapes and not just drawn shapes to graphics controller
 
 ## How do I Compile it?
-This project is compiled with Visual Studio Community 2015 default settings, the only thing to change is the SubSystem from Console to Windows in order to hide the console window when running.
+ * If compiling under Visual Studio 2015:
+   * Install Allegro 5 using Nuget
+   * Right click project > Allegro 5 > Add-ons
+     * Change Primitives Addon and Color Addon to Yes 
+   * Change SubSystem from `Console` to `Windows`
+   * Build project
+ * If compiling via command line:
+   * https://wiki.allegro.cc/index.php?title=Compiling_Allegro_Programs
 
 
 ###### This project is licensed under the MIT Open Source License
