@@ -1,4 +1,4 @@
-# GraphicsEngine
+# GameBase
 This is a basic graphics/game engine written in C++ with allegro
 
 ## What is this?
