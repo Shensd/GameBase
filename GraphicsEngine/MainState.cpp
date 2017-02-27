@@ -2,31 +2,35 @@
 #include "Graphics.h"
 #include <iostream>
 
-MainState::MainState(StateManager *man) {
-	MainState::manager = man;
+typedef MainState ms;
+
+ms::MainState(StateManager *man) {
+	ms::manager = man;
 	
-	MainState::init();
+	ms::init();
 }
 
-void MainState::init(void) {
-	MainState::x = 50;
-	MainState::y = (480 - 200);
-	MainState::h = 50;
-	MainState::w = 50;
+ms::~MainState() {}
 
-	MainState::velx = 0;
-	MainState::vely = 5;
+void ms::init(void) {
+	ms::x = 50;
+	ms::y = (480 - 200);
+	ms::h = 50;
+	ms::w = 50;
 
-	MainState::gravity = 0.6;
+	ms::velx = 0;
+	ms::vely = 5;
 
-	MainState::jumping = true;
-	MainState::moving = false;
+	ms::gravity = 0.6;
 
-	MainState::left = false;
-	MainState::right = false;
+	ms::jumping = true;
+	ms::moving = false;
+
+	ms::left = false;
+	ms::right = false;
 }
 
-void MainState::update(void) {
+void ms::update(void) {
 	std::cout << x << ", " << y << std::endl;
 	if (jumping) {
 		if ((y + h) + vely <= 480) {
@@ -40,6 +44,7 @@ void MainState::update(void) {
 		}
 	}
 	if (moving) {
+
 		if ((x + w) + velx > 640) {
 			x = 640 - w;
 		}
@@ -52,13 +57,13 @@ void MainState::update(void) {
 	}
 }
 
-void MainState::draw(Graphics *g) {
+void ms::draw(Graphics *g) {
 	g->draw_rect(x, y, x + w, y + h, al_map_rgb(165, 25, 252));
 }
 
-void MainState::destroy(void) {}
+void ms::destroy(void) {}
 
-void MainState::key_pressed(int k) {
+void ms::key_pressed(int k) {
 	switch (k) {
 	case ALLEGRO_KEY_SPACE:
 		if (!jumping) {
@@ -80,7 +85,7 @@ void MainState::key_pressed(int k) {
 	}
 }
 
-void MainState::key_released(int k) {
+void ms::key_released(int k) {
 	switch (k) {
 	case ALLEGRO_KEY_A:
 		if (moving) {

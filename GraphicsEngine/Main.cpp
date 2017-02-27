@@ -6,18 +6,33 @@
 #include "Graphics.h"
 #include <iostream>
 
+void init(void);
+void loop(void);
+void kill(void);
+
 int main() {
-	StateManager sm;
-	Graphics g;
+	init();
+	loop();
+	kill();
 
-	ALLEGRO_TIMER *timer = NULL;
-	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	return 0;
+}
 
-	if (!al_init()) { return -1; }
+StateManager sm;
+Graphics g;
+
+ALLEGRO_TIMER *timer;
+ALLEGRO_EVENT_QUEUE *event_queue;
+
+void init(void) {
+	timer = NULL;
+	event_queue = NULL;
+
+	if (!al_init()) { return; }
 
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
-	if (!al_init_primitives_addon()) { return -1; }
+	if (!al_init_primitives_addon()) { return; }
 
 	al_install_keyboard();
 
@@ -25,19 +40,19 @@ int main() {
 
 	event_queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / FPS);
-	if (!timer) { return -1; }
+	if (!timer) { return; }
 
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_display_event_source(g.get_display()));
+}
 
+void loop(void) {
 	al_start_timer(timer);
-	
+
 	bool done = false;
 
 	while (!done) {
-		bool update = false;
-
 		while (!al_is_event_queue_empty(event_queue)) {
 			ALLEGRO_EVENT events;
 			al_wait_for_event(event_queue, &events);
@@ -50,7 +65,7 @@ int main() {
 				sm.key_released(events.keyboard.keycode);
 				break;
 			case ALLEGRO_EVENT_TIMER:
-				update = true;
+				sm.update();
 				break;
 			case ALLEGRO_EVENT_DISPLAY_CLOSE:
 				done = true;
@@ -59,20 +74,17 @@ int main() {
 			}
 		}
 
-		if (done) {
-			break;
-		}
+		if (done) { break; }
 
 		g.begin_draw();
 
 		sm.draw(&g);
 
 		g.end_draw();
-
-		if (update) {
-			sm.update();
-		}
 	}
+}
 
-	return 0;
+void kill() {
+	al_destroy_timer(timer);
+	al_destroy_event_queue(event_queue);
 }

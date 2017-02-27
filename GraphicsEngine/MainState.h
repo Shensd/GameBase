@@ -9,6 +9,7 @@
 class MainState : public IState {
 public:
 	MainState(StateManager *man);
+	~MainState();
 	void init(void);
 	void update(void);
 	void draw(Graphics *g);
